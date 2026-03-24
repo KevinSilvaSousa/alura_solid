@@ -1,0 +1,103 @@
+O Single Responsibility Principle
+sugerindo que módulos de software deveriam ser coesos, ou seja, que seus componentes estivessem fortemente relacionados entre si. 
+Essa ideia influenciou diretamente o desenvolvimento do SRP.
+
+Assim, para minimizar problemas futuros, cada módulo ou classe deve ser responsável por uma única parte do projeto do sistema. 
+Isso evita a sobrecarga de responsabilidades, promove coesão, modularidade e facilita tanto a manutenção quanto a evolução do software.
+
+O problema na prática: CalculadoraDeSalario
+
+Vamos usar o caso prático da famosa classe 'CalculadoraDeSalario':
+
+class CalculadoraDeSalario:
+    def calcula(self, funcionario):
+        if funcionario.cargo == "DESENVOLVEDOR":
+            return self._dez_ou_vinte_porcento(funcionario)
+        if funcionario.cargo in ["DBA", "TESTER"]:
+            return self._quinze_ou_vinte_cinco_porcento(funcionario)
+        raise ValueError("Funcionário inválido")
+
+    def _dez_ou_vinte_porcento(self, funcionario):
+        if funcionario.salario_base > 3000.0:
+            return funcionario.salario_base * 0.8
+        else:
+            return funcionario.salario_base * 0.9
+
+    def _quinze_ou_vinte_cinco_porcento(self, funcionario):
+        if funcionario.salario_base > 2000.0:
+            return funcionario.salario_base * 0.75
+        else:
+            return funcionario.salario_base * 0.85
+
+À primeira vista, essa classe cumpre seu propósito. Porém, os problemas aparecem quando o sistema cresce:
+
+A classe tende a se tornar gigantesca, acumulando regras de cálculo para cada cargo. Imagine 15, 20 ou 30 cargos diferentes. A sequência de if seria um pesadelo.
+Cada método representa uma regra isolada, mas está preso dentro de uma única classe, o que dificulta reutilização e testes unitários.
+A chance de defeitos se propagarem é alta: uma mudança em uma regra pode afetar outras regras próximas.
+Esse é um exemplo clássico de classe não coesa, ou uma “classe deus”, onde múltiplas responsabilidades estão misturadas.
+
+Sempre em busca da coesão
+
+Sempre que analisarmos uma classe, devemos identificar o que leva ao seu crescimento. No exemplo acima, isso ocorre por dois motivos principais:
+
+Novos cargos surgindo: Aumento de regras condicionais
+Novas regras de cáculco: Cada regra adiciona métodos e aumenta complexidade
+O primeiro passo é resolver o segundo problema, que é mais simples: isolar cada regra de cálculo em uma classe separada, seguindo o SRP. 
+O contrato pode ser definido com uma interface abstrata:
+
+from abc import ABC, abstractmethod
+
+class RegraDeCalculo(ABC):
+    @abstractmethod
+    def calcula(self, funcionario):
+        pass
+
+Cada implementação contém apenas a lógica da regra específica:
+
+class DezOuVintePorcento(RegraDeCalculo):
+    def calcula(self, funcionario):
+        if funcionario.salario_base > 3000.0:
+            return funcionario.salario_base * 0.8
+        else:
+            return funcionario.salario_base * 0.9
+
+class QuinzeOuVinteCincoPorcento(RegraDeCalculo):
+    def calcula(self, funcionario):
+        if funcionario.salario_base > 2000.0:
+            return funcionario.salario_base * 0.75
+        else:
+            return funcionario.salario_base * 0.85
+
+Com essa refatoração, ganhamos os seguintes benefícios:
+
+Isolamento de responsabilidades: cada classe trata apenas de uma lógica.
+Alto nível de coesão: facilita a leitura e a manutenção do código.
+Reutilização: elimina repetições desnecessárias.
+Testes mais simples: cada regra pode ser testada de forma independente.
+A classe CalculadoraDeSalario passa a depender de uma única regra, tornando-se mais enxuta:
+
+class CalculadoraDeSalario:
+    def __init__(self, regra: RegraDeCalculo):
+        self.regra = regra
+
+    def calcula(self, funcionario):
+        return self.regra.calcula(funcionario)
+
+SRP além das classes
+
+No contexto da arquitetura de software, o SRP também pode ser aplicado em níveis mais amplos. cada camada tem uma responsabilidade bem definida:
+
+Camada de Entidades: Contém as regras de negócios mais gerais e de mais alto nível.
+
+Camada de Casos de Uso: Contém as regras específicas de aplicação que orquestram as entidades para realizar ações específicas.
+
+Camada de Interface de Entrada (Interface Adapters): Contém os adaptadores que convertem dados entre os formatos usados pelas camadas externas e as entidades internas.
+
+Camada de Interface de Saída (Frameworks & Drivers): Contém os detalhes técnicos como bancos de dados, frameworks e interfaces de usuário.
+
+Síntese do SRP
+
+O SRP é mais do que um princípio aplicado a classes: 
+é uma mentalidade de design que orienta desde a implementação de pequenos componentes até a organização da arquitetura de sistemas. 
+Aplicá-lo desde o início de um projeto ajuda a evitar problemas de manutenção e cria um ambiente em que o software pode evoluir de forma controlada, 
+clara e confiável, permitindo que equipes construam sistemas complexos com maior segurança e eficiência.

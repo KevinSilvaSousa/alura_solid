@@ -1,0 +1,14 @@
+Imagine que você tem uma loja e precisa aplicar descontos aos produtos. Inicialmente, existem:
+
+Desconto de aniversário
+
+Desconto de fidelidade
+
+No futuro, novos tipos de desconto podem surgir, como promoções de feriado ou descontos por cupom.
+
+O seu desafio é:
+
+Criar uma abstração chamada Desconto.
+Implementar pelo menos duas classes concretas, como DescontoAniversario e DescontoFidelidade.
+Criar uma função aplicar_desconto que receba qualquer tipo de desconto 
+e calcule o valor final do produto sem a necessidade de alterar o código quando novos descontos forem adicionados.

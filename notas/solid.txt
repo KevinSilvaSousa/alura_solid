@@ -1,0 +1,186 @@
+SOLID é um conjunto de princípios de design de software criado por Robert C. Martin, o famoso “Uncle Bob”. 
+Ele ajuda a desenvolver sistemas mais robustos, fáceis de entender, manter e expandir. 
+Podem ser aplicados em várias linguagens para melhorar a qualidade do código.
+
+S — Single Responsibility Principle (SRP)
+Cada classe ou módulo deve ter uma única responsabilidade, ou seja, uma única razão para mudar.
+Exemplo: 
+Uma classe Pedido deve cuidar apenas de gerenciar os pedidos, enquanto outra classe Pagamento deve cuidar do processamento de pagamentos.
+
+O — Open/Closed Principle (OCP)
+Os módulos devem estar abertos para extensão, mas fechados para modificação.
+Exemplo: 
+Se você precisa adicionar um novo método de pagamento, pode adicionar uma nova classe sem modificar as existentes.
+
+L — Liskov Substitution Principle (LSP)
+Subtipos devem ser substituíveis por seus tipos base.
+Exemplo: 
+Se Pagamento é uma classe base, então PagamentoCartao e PagamentoPix devem funcionar em qualquer lugar onde Pagamento é usado, sem alterar o comportamento do programa.
+
+I — Interface Segregation Principle (ISP)
+Os clientes não devem ser forçados a depender de interfaces que não utilizam.
+Exemplo: 
+Uma interface geral como Pagamento pode ser dividida em interfaces menores, como PagamentoOnline e PagamentoOffline.
+
+D — Dependency Inversion Principle (DIP)
+Dependências devem ser abstrações (interfaces), e não implementações concretas.
+Exemplo: 
+Em vez de um serviço depender diretamente de MySQLDatabase, ele deve depender de uma interface Database.
+
+Por que usar SOLID?
+O uso de SOLID traz uma considerável melhoria na legibilidade, 
+pois o código fica mais organizado e fácil de entender. Isso gera maior facilidade de manutenção, na qual as alterações impactam menos partes do sistema.
+Dessa forma, fica mais fácil adicionar novas funcionalidades, causando menos “efeitos colaterais”. 
+Além disso, há melhora considerável na testabilidade do software, pois classes desacopladas são mais fáceis de testar isoladamente.
+
+Como usar SOLID em Python?
+Python é uma linguagem dinâmica e orientada a objetos, tornando-a adequada para aplicar os princípios SOLID.
+
+Single Responsibility Principle (SRP)
+Cada classe tem apenas uma responsabilidade.
+
+class Pedido:
+    def adicionar_produto(self, produto):
+
+class Pagamento:
+    def processar_pagamento(self, pedido, metodo_pagamento):
+Open/Closed Principle (OCP)
+É possível adicionar novos métodos de pagamento sem alterar a função realizar_pagamento:
+
+from abc import ABC, abstractmethod
+
+class Pagamento(ABC):
+    @abstractmethod
+    def processar(self, valor):
+        pass
+
+class PagamentoCartao(Pagamento):
+    def processar(self, valor):
+        print(f"Processando pagamento no cartão de {valor}")
+
+class PagamentoPix(Pagamento):
+    def processar(self, valor):
+        print(f"Processando pagamento via Pix de {valor}")
+
+def realizar_pagamento(pagamento: Pagamento, valor):
+    pagamento.processar(valor)
+
+# Uso
+pagamento = PagamentoCartao()
+realizar_pagamento(pagamento, 100)
+Liskov Substitution Principle (LSP)
+class Animal:
+    def emitir_som(self):
+        pass
+
+class Cachorro(Animal):
+    def emitir_som(self):
+        return "Latido"
+
+class Gato(Animal):
+    def emitir_som(self):
+        return "Miado"
+
+def fazer_animal_emitir_som(animal: Animal):
+    print(animal.emitir_som())
+
+# Uso
+cachorro = Cachorro()
+gato = Gato()
+
+fazer_animal_emitir_som(cachorro)  # Funciona sem alterar o comportamento
+fazer_animal_emitir_som(gato)
+Interface Segregation Principle (ISP)
+As classes implementam apenas os métodos relevantes para elas.
+
+class PagamentoOnline:
+    def realizar_pagamento_online(self):
+        pass
+
+class PagamentoOffline:
+    def realizar_pagamento_offline(self):
+        pass
+
+class PagamentoCartao(PagamentoOnline):
+    def realizar_pagamento_online(self):
+        print("Pagamento online com cartão")
+
+class PagamentoDinheiro(PagamentoOffline):
+    def realizar_pagamento_offline(self):
+        print("Pagamento em dinheiro na loja")
+Dependency Inversion Principle (DIP)
+A classe ProdutoService não depende diretamente de MySQLDatabase, mas de uma abstração Database.
+
+class Database:
+    def salvar(self, dados):
+        pass
+
+class MySQLDatabase(Database):
+    def salvar(self, dados):
+        print(f"Salvando no MySQL: {dados}")
+
+class ProdutoService:
+    def __init__(self, database: Database):
+        self.database = database
+
+    def salvar_produto(self, produto):
+        self.database.salvar(produto)
+
+# Uso
+db = MySQLDatabase()
+service = ProdutoService(db)
+service.salvar_produto("Produto 1")
+Aplicar os princípios SOLID no seu software melhora a qualidade do código e torna o desenvolvimento mais sustentável.
+
+Get Gabi Deutner’s stories in your inbox
+Join Medium for free to get updates from this writer.
+
+Enter your email
+Subscribe
+
+Remember me for faster sign in
+
+O uso de herança, interfaces (ou classes base abstratas) e injeção de dependência são ferramentas importantes para a implementação dos seus princípios.
+
+Além disso, também é importante relembrarmos os conceitos de Classes Abstratas. 
+Classes abstratas são classes que não podem ser instanciadas diretamente e servem como modelo para outras classes. 
+Elas são utilizadas para definir uma estrutura básica que outras classes concretas devem seguir, 
+fornecendo métodos e propriedades que podem (ou devem) ser implementados ou sobrescritos nas subclasses.
+
+Características principais das Classes Abstratas:
+Não podem ser instanciadas diretamente. Ou seja, você não pode criar objetos de uma classe abstrata.
+Definem uma interface ou comportamento padrão. Elas podem conter métodos abstratos (sem implementação) e métodos concretos (com implementação).
+Os métodos abstratos são métodos declarados, mas não implementados, e as subclasses são obrigadas a implementá-los.
+Existe o uso de herança, no qual classes abstratas são projetadas para serem estendidas por outras classes.
+
+No Python, para criar classes abstratas, utiliza-se o módulo abc (Abstract Base Class). Os métodos abstratos são decorados com @abstractmethod.
+
+from abc import ABC, abstractmethod
+
+class Animal(ABC):
+    @abstractmethod
+    def fazer_som(self):
+        pass  # Método abstrato que deve ser implementado pelas subclasses
+
+    def dormir(self):
+        print("Dormindo...")  # Método concreto com implementação padrão
+
+class Cachorro(Animal):
+    def fazer_som(self):
+        print("Au au!")  # Implementação obrigatória do método abstrato
+
+class Gato(Animal):
+    def fazer_som(self):
+        print("Miau!")
+
+# animal = Animal()  # Isso geraria um erro porque Animal é uma classe abstrata
+cachorro = Cachorro()
+cachorro.fazer_som()  # Saída: "Au au!"
+cachorro.dormir()  # Saída: "Dormindo..."
+Vantagens:
+Forçam consistência, pois garantem que todas as subclasses sigam um contrato específico.
+Facilitam a manutenção, pois fornecem um padrão claro para implementar novas funcionalidades.
+Suportam o princípio de substituição de Liskov, pois as subclasses podem ser usadas onde a classe base é esperada.
+
+Quando usar?
+Quando você deseja definir um conjunto de métodos obrigatórios para um grupo de classes relacionadas e ao implementar uma hierarquia de classes com comportamentos comuns e específicos.
