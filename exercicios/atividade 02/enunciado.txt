@@ -1,0 +1,21 @@
+O Open/Closed Principle (OCP) nos diz que devemos ser capazes de adicionar novos comportamentos sem alterar o código existente.
+
+No exemplo a seguir, queremos calcular o custo de envio para diferentes tipos de transporte: normal, expresso e econômico.
+
+class CalculadoraFrete:
+    def calcular(self, pedido):
+        if pedido.tipo_envio == "normal":
+            return 10
+        elif pedido.tipo_envio == "expresso":
+            return 20
+        elif pedido.tipo_envio == "economico":
+            return 5
+        return 0
+
+Desafio: 
+Se quisermos adicionar um novo tipo de envio, precisamos alterar essa classe, o que viola o Princípio Aberto/Fechado (OCP). 
+Esse problema acontece porque toda a lógica está concentrada em um único lugar, obrigando mudanças no código sempre que surge uma nova regra de frete.
+
+refatore o código para que as classes fiquem fechadas para modificações, mas abertas para extensões. 
+Crie estratégias de cálculo independentes para cada tipo de envio, permitindo que novos comportamentos sejam adicionados apenas estendendo o código existente, 
+sem alterar o que já está funcionando.

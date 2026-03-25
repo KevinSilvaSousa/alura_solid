@@ -1,0 +1,32 @@
+Imagine que temos um quadrado e um retângulo, e queremos calcular a área. 
+A princípio, dá pra pensar em reaproveitar o código do retângulo e calcular a área do quadrado da mesma forma:
+
+class Retangulo:
+    def __init__(self, largura: float, altura: float):
+        self.largura = largura
+        self.altura = altura
+
+    def area(self):
+        return self.largura * self.altura
+
+
+class Quadrado(Retangulo):
+    def __init__(self, lado: float):
+        super().__init__(lado, lado)
+
+    def set_largura(self, largura: float):
+        self.largura = largura
+        self.altura = largura
+
+    def set_altura(self, altura: float):
+        self.altura = altura
+        self.largura = altura
+
+Só que aqui já aparece um problema: 
+a classe Quadrado quebra a expectativa de como o Retangulo funciona. 
+O inicializador é diferente (espera só o lado), e os métodos set_largura e set_altura forçam um comportamento específico para manter os lados iguais. 
+A função area() ainda funciona, mas a lógica começa a ficar inconsistente.
+
+E se quisermos adicionar agora uma classe Triangulo? Será que o cálculo da área vai ter o comportamento esperado?
+
+Aplique os conceitos do Princípio de Substituição de Liskov para repensar essa hierarquia e corrigir o problema apresentado acima.

@@ -1,0 +1,50 @@
+Você está desenvolvendo uma hierarquia de classes para representar diferentes tipos de aves em uma aplicação orientada a objetos. 
+A classe base Ave define um método voar, assumindo que toda ave possui essa capacidade. 
+A subclasse Pinguim herda de Ave, mas como pinguins não voam, o método voar é sobrescrito para lançar uma exceção. 
+Em seguida, uma função mostrar_voo recebe qualquer objeto do tipo Ave e chama seu método voar.
+
+Considere o seguinte código:
+
+class Ave:
+    def voar(self):
+        return "Esta ave pode voar"
+
+class Pinguim(Ave):
+    def voar(self):
+        raise Exception("Pinguins não podem voar")
+
+def mostrar_voo(ave: Ave):
+    print(ave.voar())
+
+pinguim = Pinguim()
+mostrar_voo(pinguim)
+Copiar código
+Por que esse código viola o Princípio de Substituição de Liskov? Como podemos corrigir mantendo o mesmo modelo de classes?
+
+Ver opinião do instrutor
+Opinião do instrutor
+
+Uma forma de corrigir esse problema é refatorar a hierarquia de classes para que respeite o contrato definido pela superclasse. Para isso, podemos criar uma classe mais genérica e separar as aves em duas categorias: as que voam e as que não voam.
+
+
+Copiar código
+Por que isso importa?
+
+Quando uma subclasse não respeita o contrato da superclasse:
+
+Funções que trabalham com a classe base podem quebrar.
+
+O sistema se torna menos previsível e mais propenso a bugs.
+
+A manutenção e evolução do código ficam mais complicadas, gerando dívida técnica.
+
+O Princípio de Substituição de Liskov (LSP) nos lembra que tipos representam contratos comportamentais, e não apenas estruturas de código. Em outras palavras, uma subclasse deve estender o comportamento da superclasse sem quebrá-lo ou restringi-lo.
+
+Conclusão
+
+O LSP não é só teoria. Trata-se de uma prática essencial para construir sistemas coesos, previsíveis e fáceis de manter. Sempre que você criar uma subclasse, pergunte-se:
+“Essa classe pode substituir a superclasse sem alterar o comportamento esperado?”
+
+Se a resposta for não, é hora de repensar a hierarquia.
+
+Seguindo esse princípio, seu código se torna mais robusto, compreensível e preparado para crescer sem surpresas desagradáveis.
