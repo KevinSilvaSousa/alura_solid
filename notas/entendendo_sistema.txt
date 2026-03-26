@@ -1,0 +1,77 @@
+Arquitetura com C4 Model
+
+O C4 Model, criado por Simon Brown, é uma forma de visualizar a arquitetura de software em diferentes níveis de detalhe:
+
+** Contexto (C1):** visão mais macro, quem usa o sistema, quais integrações existem.
+
+Contêiner (C2): mostra os principais serviços/aplicações, bancos de dados e como se relacionam.
+
+Componentes (C3): detalha a divisão interna de um contêiner (ex.: os módulos de um microserviço).
+
+Código (C4): zoom ainda maior, mostrando detalhes técnicos de classes ou funções, quando necessário.
+
+O grande benefício é que cada pessoa consegue ver a arquitetura no nível certo de abstração: um gestor pode olhar o C1, 
+um desenvolvedor pode mergulhar no C3 ou C4. Isso evita mal-entendidos e acelera o onboarding de novos membros no time.
+
+Documentação viva com Swagger
+
+Se o C4 ajuda a ver a arquitetura, o Swagger (OpenAPI) ajuda na comunicação entre times e sistemas.
+Em projetos baseados em APIs, a documentação tradicional muitas vezes fica desatualizada. 
+O Swagger resolve isso porque a documentação é gerada automaticamente a partir do código.
+
+Com ele, conseguimos:
+
+Ter um contrato claro da API (endpoints, parâmetros, respostas).
+
+Permitir que outros times consumam nossa API sem precisar perguntar o tempo todo “como funciona esse endpoint?”.
+
+Testar rapidamente as rotas diretamente pela interface interativa.
+
+Em outras palavras, o Swagger é uma documentação viva: sempre atualizada e fácil de usar.
+
+ADRs (Architecture Decision Records)
+
+Outro ponto fundamental são os ADRs (Architecture Decision Records).
+Enquanto o C4 mostra como o sistema está estruturado e o Swagger mostra como a API funciona, 
+os ADRs registram por que certas decisões arquiteturais foram tomadas.
+
+Um ADR é basicamente um documento curto e objetivo que explica:
+
+Contexto: qual era o problema ou situação que precisávamos resolver.
+
+Decisão: qual escolha foi feita.
+
+Alternativas consideradas: quais outras opções avaliamos e por que não seguimos com elas.
+
+Consequências: impactos positivos e negativos dessa decisão.
+
+Quando usar ADR?
+
+Usamos ADRs (Architecture Decision Records) 
+sempre que precisamos tomar uma decisão arquitetural entre duas ou mais possibilidades que podem impactar o sistema no futuro.
+
+O formato pode ser simples, até um documento em Word ou Markdown é suficiente, 
+mas o mais importante é que seja registrado, revisado em pares e aprovado pelo time. 
+Assim, a responsabilidade pela decisão é compartilhada e não fica centralizada em uma única pessoa.
+
+Esse registro evita perguntas futuras como “por que escolhemos PostgreSQL e não MongoDB?”. 
+A resposta já estará documentada, junto com o contexto, as alternativas consideradas e os impactos da decisão.
+
+Conclusão
+
+Quando combinamos boas práticas de arquitetura 
+(C4) com documentação clara (Swagger) 
+e registro de decisões arquiteturais (ADRs), o impacto é enorme:
+
+O time entende o “todo” do sistema e não só sua parte isolada.
+
+As integrações ficam mais claras e a comunicação entre squads melhora.
+
+As decisões tomadas não se perdem no tempo, ficam registradas para consulta.
+
+O software ganha mais qualidade, longevidade e governança.
+
+É como construir uma casa: 
+você precisa do projeto arquitetônico (C4), 
+de manuais de uso atualizados (Swagger) e também do histórico das decisões de engenharia 
+(ADRs). Só assim a obra fica sólida, escalável e sustentável.
