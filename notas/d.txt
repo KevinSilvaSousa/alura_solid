@@ -1,0 +1,103 @@
+Quando falamos do D do SOLID, estamos nos referindo ao Princípio da Inversão de Dependência 
+(Dependency Inversion Principle — DIP). 
+E uma dúvida comum costuma surgir:
+“Isso é a mesma coisa que injeção de dependência?”
+
+A resposta é: não!
+Eles se complementam, mas são conceitos diferentes.
+
+O que é o DIP (Inversão de Dependência)?
+
+O DIP é um princípio de design de software. Ele afirma:
+
+"Módulos de alto nível não devem depender de módulos de baixo nível. Ambos devem depender de abstrações."
+
+Traduzindo:
+
+Alto nível: partes do sistema que contêm a regra de negócio (ex.: PagamentoService).
+
+Baixo nível: detalhes técnicos, como APIs, banco de dados ou serviços externos (ex.: PayPalAPI, StripeAPI).
+
+Abstrações: contratos, interfaces ou classes abstratas que definem como a comunicação acontece (ex.: GatewayPagamento).
+
+A principal vantagem é que seu código se torna menos acoplado e mais flexível.
+Se, no futuro, você quiser trocar o serviço de pagamento (de PayPal para Stripe, por exemplo), basta mudar a implementação, sem tocar na lógica de negócio.
+
+O que é Injeção de Dependência (DI)?
+
+A Injeção de Dependência (Dependency Injection — DI) é uma técnica que usamos para aplicar o DIP.
+Em vez de uma classe criar diretamente suas dependências, ela as recebe de fora.
+
+Essa injeção pode acontecer de várias formas:
+
+Por construtor (forma mais comum).
+Por método setter (função que configura a dependência).
+Por método direto, ao passar a dependência como argumento.
+Ou seja, a DI é o “como fazer” enquanto o DIP é o “por que fazer
+
+Exemplo em Python
+
+Sem DIP (acoplado)
+
+class PayAPI:
+    def pagar(self, valor: float):
+        print(f"Pagando {valor} com PayPal")
+
+class PagamentoService:
+    def __init__(self):
+        self.gateway = PayPalAPI()  # Acoplado diretamente
+
+    def processar(self, valor: float):
+        self.gateway.pagar(valor)
+
+service = PagamentoService()
+service.processar(100)
+
+Nesse exemplo, PagamentoService depende diretamente de PayAPI.
+Se quisermos trocar para outro provedor, como PayBrasil, será necessário alterar a própria classe.
+
+Com DIP + DI
+
+from abc import ABC, abstractmethod
+
+
+class GatewayPagamento(ABC):
+    @abstractmethod
+    def pagar(self, valor: float):
+        pass
+
+
+class PayAPI(GatewayPagamento):
+    def pagar(self, valor: float):
+        print(f"Pagando {valor} com PayPal")
+
+
+class PayBrasil(GatewayPagamento):
+    def pagar(self, valor: float):
+        print(f"Pagando {valor} com Stripe")
+
+
+class PagamentoService:
+    def __init__(self, gateway: GatewayPagamento):  # <- Injeção de dependência
+        self.gateway = gateway
+
+    def processar(self, valor: float):
+        self.gateway.pagar(valor)
+
+
+service = PagamentoService(PayBrasil())
+service.processar(200)
+Copiar código
+Aqui temos dois pontos importantes:
+
+DIP: PagamentoService depende apenas da abstração GatewayPagamento, e não mais de uma implementação concreta.
+
+DI: A dependência concreta (PayBrasil) é injetada de fora para dentro por meio do construtor.
+
+Resumindo
+
+DIP (Dependency Inversion Principle): é o princípio. Ele diz que devemos depender de abstrações, não de implementações.
+
+DI (Dependency Injection): é a técnica. É a forma prática de fornecer essas abstrações para que o DIP seja aplicado corretamente.
+
+Ou seja: O DIP é o porquê. A DI é o como.

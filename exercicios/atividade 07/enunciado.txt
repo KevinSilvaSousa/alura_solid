@@ -1,0 +1,23 @@
+Você está trabalhando em um projeto, e seu chefe pediu que criasse uma funcionalidade para converter em PDF o conteúdo gerado por uma IA generativa. 
+Para isso, você implementou uma classe GeradorPDF e uma classe ConversorArquivo, que utiliza diretamente essa implementação:
+
+class GeradorPDF:
+    def gerar(self, conteudo: str):
+        print(f"Gerando PDF com o conteúdo: {conteudo}")
+
+class ConversorArquivo:
+    def __init__(self):
+        # Dependência direta de uma implementação concreta
+        self.gerador = GeradorPDF()
+
+    def converter(self, conteudo: str):
+        self.gerador.gerar(conteudo)
+
+O problema surge quando o projeto cresce. Novos clientes passam a solicitar outros formatos de saída, como HTML, Excel, e possivelmente outros no futuro.
+
+Se continuarmos dependendo diretamente de implementações concretas como GeradorPDF, qualquer nova necessidade exigirá mudanças na classe ConversorArquivo. 
+Isso torna o sistema rígido, frágil e difícil de manter, violando o Princípio da Inversão de Dependência (Dependency Inversion Principle - DIP).
+
+Como você pode aplicar o DIP para tornar o código mais flexível e preparado para mudanças?
+
+Pense em como abstrair a responsabilidade de geração de arquivos e permitir que diferentes formatos sejam utilizados sem alterar a classe de alto nível.

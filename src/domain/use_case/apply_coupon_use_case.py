@@ -1,4 +1,4 @@
-from src.domain.entities.carrinho import Carrinho
+from domain.entities.cart import Cart
 from src.domain.service.coupon.apply_coupon import ApplyCouponStrategy
 from src.domain.factories.coupon_strategy_factory import TypeCoupon, StrategyCouponFactory
 

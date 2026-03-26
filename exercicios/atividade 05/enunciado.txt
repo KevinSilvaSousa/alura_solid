@@ -1,0 +1,54 @@
+Temos um protocolo (ou interface) chamado Impressora, que define os métodos imprimir(), 
+digitalizar() e fax().
+
+O problema é quando essa interface é aplicada a impressoras que não oferecem todos esses recursos. 
+Por exemplo, 
+uma impressora básica que apenas imprime é forçada a implementar também os métodos de digitalização e envio de fax, ainda que eles não façam sentido para o seu funcionamento.
+
+Esse tipo de implementação viola o Princípio da Segregação de Interfaces (ISP), 
+um dos princípios SOLID, que afirma que nenhuma classe deve ser forçada a depender de métodos que não utiliza. 
+Isso gera código desnecessariamente complexo, difícil de manter e propenso a erros.
+
+Veja o exemplo abaixo:
+
+from abc import ABC, abstractmethod
+
+class Impressora(ABC):
+    @abstractmethod
+    def imprimir(self, documento: str):
+        pass
+
+    @abstractmethod
+    def digitalizar(self, documento: str):
+        pass
+
+    @abstractmethod
+    def enviar_fax(self, numero: str, documento: str):
+        pass
+
+class ImpressoraAntiga(Impressora):
+    def imprimir(self, documento: str):
+        print(f"Imprimindo: {documento}")
+
+    def digitalizar(self, documento: str):
+        raise NotImplementedError("Essa impressora não digitaliza.")
+
+    def enviar_fax(self, numero: str, documento: str):
+        raise NotImplementedError("Essa impressora não envia fax.")
+
+Aplique o Princípio da Segregação de Interfaces e refatore o código acima, quebrando a interface Impressora em interfaces menores e mais específicas.
+
+O objetivo é tornar o projeto mais flexível, permitindo que cada classe implemente apenas os comportamentos que realmente oferece.
+
+
+O problema apresentado é justamente onde entra o Princípio da Segregação de Interfaces: 
+ao criar uma interface única que obriga todas as classes a implementar métodos que não fazem sentido para elas, acabamos gerando um código mais frágil, confuso e difícil de manter.
+
+No exemplo, 
+a interface Impressora define os métodos imprimir(), digitalizar() e enviar_fax(). 
+No entanto, uma impressora simples que apenas imprime é forçada a implementar também os métodos de digitalização e envio de fax — o que não faz parte de suas responsabilidades. 
+Isso leva à criação de métodos com exceções artificiais, quebrando a expectativa de quem utiliza a classe.
+
+Para resolver esse problema, o ideal é dividir a interface em partes menores e mais específicas, como InterfaceImpressora, InterfaceScanner e InterfaceFax. 
+Assim, cada classe implementa apenas os comportamentos que realmente oferece: 
+a ImpressoraAntiga pode implementar apenas InterfaceImpressora, enquanto uma ImpressoraMultifuncional pode implementar as três interfaces sem violar nenhuma regra.

@@ -1,0 +1,36 @@
+Desafio: Interface Segregation no GoMove
+
+Imagine que você está desenvolvendo o GoMove, um aplicativo de mobilidade urbana onde motoristas podem se cadastrar para oferecer diferentes tipos de transporte:
+
+Corridas comuns
+
+Caronas compartilhadas
+
+Transporte de pequenas cargas
+
+Atualmente, sua equipe criou uma interface única chamada IMotorista que todos os motoristas devem implementar:
+
+
+from abc import ABC, abstractmethod
+
+class IMotorista(ABC):
+    @abstractmethod
+    def aceitar_corrida(self, destino: str) -> None:
+        pass
+
+    @abstractmethod
+    def aceitar_carona_compartilhada(self, destino: str, passageiros: list) -> None:
+        pass
+
+    @abstractmethod
+    def transportar_carga(self, peso: float) -> None:
+        pass
+
+Refatore o design aplicando o Princípio da Segregação de Interfaces.
+
+Crie implementações adequadas para os diferentes tipos de motoristas, garantindo que cada classe implemente apenas os métodos relevantes para sua função:
+
+Um motorista comum, que realiza apenas corridas individuais.
+Um motorista de carona compartilhada, que realiza corridas com múltiplos passageiros.
+Um motorista de transporte de carga, que realiza apenas entregas de carga.
+Evite métodos inúteis, genéricos ou vazios. O objetivo é tornar o código mais coeso, flexível e alinhado aos princípios do design orientado a objetos.

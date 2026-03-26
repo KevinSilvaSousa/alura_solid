@@ -3,25 +3,23 @@ from typing import List
 import uuid
 from enum import Enum, auto
 
-class CarrinhoStatus(Enum):
+class CartStatus(Enum):
     ATIVO = auto()
     FINALIZADO = auto()
     EXPIRADO = auto()
 
 
-class Carrinho:
+class Cart:
 
-    def __init__ (self, products,  carrinho_id: str):
+    def __init__ (self, products,  cart_id: str):
         self._products = products
-        self._carrinho_id = carrinho_id
-        self._status = CarrinhoStatus.ATIVO
-
-
+        self._cart_id = cart_id
+        self._status = CartStatus.ATIVO
 
     def get_id(self):
-        if not self._carrinho_id:
-            self._carrinho_id = uuid.uuid4()
-        return self._carrinho_id
+        if not self._cart_id:
+            self._cart_id = uuid.uuid4()
+        return self._cart_id
     
     def add_novo_produto(self, produto:Produto):
         self._products.append(produto)
@@ -37,7 +35,7 @@ class Carrinho:
         return self._status
     
     def _cal_subtotal(self):
-        prices = [product.get_preco() for product in self._products 
+        prices = [product.get_price() for product in self._products 
                   if product.is_available() is True
                   ]
         return sum(prices)
